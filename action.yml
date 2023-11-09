@@ -1,6 +1,6 @@
 name: "Scalafmt Action"
 description: "Format Scala code using scalafmt"
-author: "Matthew Rothenberg <mroth@openlaw.io>"
+author: "GarnerCorp <opensource@garnercorp.com>"
 branding:
   icon: "wind"
   color: "red"
@@ -9,8 +9,40 @@ inputs:
     description: "Args to pass to scalafmt"
     default: "--list"
     required: false
+  version:
+    description: "Version of scalafmt"
+    default: "3.7.15"
+    required: false
+
 runs:
-  using: "docker"
-  image: "Dockerfile"
-  args:
-    - ${{ inputs.args }}
+  using: "composite"
+  steps:
+  - shell: bash
+    run: |
+      "$action_path/set-path.sh"
+    env:
+      scalafmt_version: ${{ inputs.version }}
+      action_path: ${{ github.action_path }}
+  - uses: actions/cache/restore@v4
+    id: cache
+    with:
+      path: ${{ env.SCALAFMT_PATH }}
+      key: scalafmt-${{ inputs.version }}
+  - shell: bash
+    id: retrieve-scalafmt
+    if: ${{ !steps.cache.outputs.cache-hit }}
+    run: |
+      curl -sL https://github.com/scalameta/scalafmt/releases/download/v${scalafmt_version}/scalafmt-linux-glibc > "$SCALAFMT_PATH/scalafmt"
+      chmod +x "$SCALAFMT_PATH/scalafmt"
+      echo "retrieved=1" >> "$GITHUB_OUTPUT"
+  - shell: bash
+    run: |
+      run-scalafmt.sh
+    env:
+      args: ${{ inputs.args }}
+  - name: Cache scalafmt
+    if: ${{ always() && steps.retrieve-scalafmt.outputs.retrieved }}
+    uses: actions/cache/save@v4
+    with:
+      path: ${{ env.SCALAFMT_PATH }}
+      key: scalafmt-${{ inputs.version }}

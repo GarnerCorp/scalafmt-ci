@@ -11,7 +11,7 @@ Simply add a step such as the following to your your workflow yml file:
 
 ```yml
 - name: Check for scalafmt conformance
-  uses: openlawteam/scalafmt-ci@v2
+  uses: garnercorp/scalafmt-ci@v3
 ```
 
 Example in the full context of a workflow file, with some optional arguments:
@@ -24,28 +24,11 @@ jobs:
   scalafmt-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
       - name: Checking your code to see if u r naughty or nice
-        uses: openlawteam/scalafmt-ci@v2
+        uses: garnercorp/scalafmt-ci@v3
         with:
           args: "--exclude=third_party --list"
-```
-
-### Installing with GitHub Marketplace
-
-https://github.com/marketplace/actions/scalafmt-action
-
-### (Legacy) HCL Syntax
-
-If you are still using legacy HCL format (from the GitHub Actions Alpha test),
-you will need to pin to a previous version of this action.
-
-```hcl
-action "lint" {
-  uses="openlawteam/scalafmt-ci@v0"
-  # optional additional args
-  args="--exclude ./vendor"
-}
 ```

@@ -1,12 +1,12 @@
 on: [push]
-name: Check with testdata
+name: Check with good testdata
 
 jobs:
-  check-testdata:
+  check-good-testdata:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Checking testdata
+      - uses: actions/checkout@v4
+      - name: Checking testdata (pass)
         uses: ./
         with:
           args: "-c .github/testdata/.scalafmt.conf --exclude .github/testdata/Bad.scala --list"

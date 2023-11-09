@@ -3,6 +3,7 @@ messiness added to it. -mroth */
 package org.scalafmt
 
 sealed abstract class Formatted {
+
   def toEither: Either[Throwable, String] = this match {
     case Formatted.Success(s) => Right(s)
     case Formatted.Failure(e) => Left(e) // too much space before comment
@@ -15,7 +16,6 @@ sealed abstract class Formatted {
 }
 
 /** Aligned by first asterisk, default ScalaDoc style is second.
-  *
   */
 object Formatted {
   case class Success(formattedCode: String) extends Formatted
