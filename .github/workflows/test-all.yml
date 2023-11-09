@@ -1,0 +1,12 @@
+on: [workflow_dispatch]
+name: Check with all testdata
+
+jobs:
+  check-testdata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checking testdata
+        uses: ./
+        with:
+          args: "-c .github/testdata/.scalafmt.conf --list"

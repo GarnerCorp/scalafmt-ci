@@ -1,0 +1,12 @@
+on: [workflow_dispatch]
+name: Regenerate Good file (run in act)
+
+jobs:
+  regenerate-good:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checking testdata
+        uses: ./
+        with:
+          args: "-c .github/testdata/.scalafmt.conf --stdout .github/testdata/Bad.scala"

@@ -16,7 +16,6 @@ sealed abstract class Formatted {
 }
 
 /** Aligned by first asterisk, default ScalaDoc style is second.
- *
  */
 object Formatted {
     case class Success(formattedCode: String) extends Formatted
