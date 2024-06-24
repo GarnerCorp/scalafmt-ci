@@ -9,25 +9,28 @@ inputs:
     description: "Args to pass to scalafmt"
     default: "--list"
     required: false
-  version:
-    description: "Version of scalafmt"
-    default: "3.7.15"
-    required: false
 
 runs:
   using: "composite"
   steps:
   - shell: bash
     run: |
+      version=$(perl -ne 'next unless /^\s*version\s*=\s*(\d+\.\d+\.\d+)/; print "$1"; last' .scalafmt.conf)
+      if [ -z "$version" ]; then
+        echo "Failed to extract scalafmt version from .scalafmt.conf" >> "$GITHUB_STEP_SUMMARY"
+        exit 1
+      fi
+      echo "scalafmt_version=$version" >> "$GITHUB_ENV"
+  - shell: bash
+    run: |
       "$action_path/set-path.sh"
     env:
-      scalafmt_version: ${{ inputs.version }}
       action_path: ${{ github.action_path }}
   - uses: actions/cache/restore@v4
     id: cache
     with:
       path: ${{ env.SCALAFMT_PATH }}
-      key: scalafmt-${{ inputs.version }}
+      key: scalafmt-${{ env.scalafmt_version }}
   - shell: bash
     id: retrieve-scalafmt
     if: ${{ !steps.cache.outputs.cache-hit }}
@@ -45,4 +48,4 @@ runs:
     uses: actions/cache/save@v4
     with:
       path: ${{ env.SCALAFMT_PATH }}
-      key: scalafmt-${{ inputs.version }}
+      key: scalafmt-${{ env.scalafmt_version }}
