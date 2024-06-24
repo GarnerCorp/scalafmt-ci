@@ -7,7 +7,7 @@ scalafmt --non-interactive $args > "$output" 2> "$warnings"
 result=$?
 cat "$output"
 cat "$warnings" >&2
-[ $result -eq 0 ] && exit
+[ $result -eq 0 ] && echo "All files well-formatted ✨" >> "$GITHUB_STEP_SUMMARY" && exit
 
 report() {
     file="$1"

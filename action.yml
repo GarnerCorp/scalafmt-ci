@@ -17,7 +17,7 @@ runs:
     run: |
       version=$(perl -ne 'next unless /^\s*version\s*=\s*(\d+\.\d+\.\d+)/; print "$1"; last' .scalafmt.conf)
       if [ -z "$version" ]; then
-        echo "Failed to extract scalafmt version from .scalafmt.conf"
+        echo "Failed to extract scalafmt version from .scalafmt.conf" >> "$GITHUB_STEP_SUMMARY"
         exit 1
       fi
       echo "scalafmt_version=$version" >> "$GITHUB_ENV"
