@@ -3,13 +3,6 @@ output=$(mktemp)
 warnings=$(mktemp)
 errors=$(mktemp)
 
-enforce_scala_format_version() {
-  if [ -e .scalafmt.conf ]; then
-    perl -pi -e 'next unless s/^\s*(version)=.*/$1=$ENV{scalafmt_version}/' .scalafmt.conf
-  fi
-}
-
-enforce_scala_format_version
 scalafmt --non-interactive $args > "$output" 2> "$warnings"
 result=$?
 cat "$output"
