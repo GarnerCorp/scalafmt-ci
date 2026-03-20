@@ -26,7 +26,7 @@ jobs:
   scalafmt-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Checking your code to see if u r naughty or nice
         uses: garnercorp/scalafmt-ci@v3
         with:
