@@ -8,6 +8,6 @@ jobs:
       - uses: actions/checkout@v6
       - name: Checking testdata (pass)
         uses: ./
-        working-directory: .github/testdata
         with:
+          working-directory: .github/testdata
           args: "--exclude Bad.scala --list"
