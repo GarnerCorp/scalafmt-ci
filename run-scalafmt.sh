@@ -16,7 +16,7 @@ report() {
     [ -s "$file" ] || return
     echo "<details><summary>$summary</summary>"
     echo
-    echo '```'
+    echo '```diff'
     perl -pe 's/$ENV{GITHUB_WORKSPACE}//g' "$file"
     echo '```'
     echo '</details>'
