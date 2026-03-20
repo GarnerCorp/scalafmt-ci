@@ -9,11 +9,16 @@ inputs:
     description: "Args to pass to scalafmt"
     default: "--list"
     required: false
+  working-directory:
+    description: "Working directory"
+    default: "${{ github.workspace }}"
+    required: false
 
 runs:
   using: "composite"
   steps:
   - shell: bash
+    working-directory: ${{ inputs.working-directory }}
     run: |
       version=$(perl -ne 'next unless /^\s*version\s*=\s*(\d+\.\d+\.\d+)/; print "$1"; last' .scalafmt.conf)
       if [ -z "$version" ]; then
@@ -39,6 +44,7 @@ runs:
       chmod +x "$SCALAFMT_PATH/scalafmt"
       echo "retrieved=1" >> "$GITHUB_OUTPUT"
   - shell: bash
+    working-directory: ${{ inputs.working-directory }}
     run: |
       run-scalafmt.sh
     env:
