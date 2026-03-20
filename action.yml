@@ -26,7 +26,7 @@ runs:
       "$action_path/set-path.sh"
     env:
       action_path: ${{ github.action_path }}
-  - uses: actions/cache/restore@v4
+  - uses: actions/cache/restore@v5
     id: cache
     with:
       path: ${{ env.SCALAFMT_PATH }}
@@ -45,7 +45,7 @@ runs:
       args: ${{ inputs.args }}
   - name: Cache scalafmt
     if: ${{ always() && steps.retrieve-scalafmt.outputs.retrieved }}
-    uses: actions/cache/save@v4
+    uses: actions/cache/save@v5
     with:
       path: ${{ env.SCALAFMT_PATH }}
       key: scalafmt-${{ env.scalafmt_version }}
